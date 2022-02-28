@@ -106,3 +106,63 @@ const toggleAll = () => {
 
 const $allToggleButton = document.querySelector('.toggle-all');
 $allToggleButton.addEventListener('change', toggleAll);
+
+// show all todos part
+const showAllTodos = e => {
+  deleteClass('#active', 'selected');
+  deleteClass('#completed', 'selected');
+  e.target.className = 'selected';
+  const $todos = $todoList.querySelectorAll('li');
+  $todos.forEach(todo => {
+    todo.style.display = 'block'; // all li need to be visible.
+  });
+};
+
+const $showAllButton = document.getElementById('all');
+$showAllButton.addEventListener('click', showAllTodos);
+
+// show active todos part
+const showActiveTodos = e => {
+  deleteClass('#all', 'selected');
+  deleteClass('#completed', 'selected');
+  e.target.className = 'selected';
+  const $todos = $todoList.querySelectorAll('li');
+  $todos.forEach(todo => {
+    todo.style.display = todo.querySelector('.toggle').checked === false ? 'block' : 'none';
+  });
+};
+
+const $showActiveButton = document.getElementById('active');
+$showActiveButton.addEventListener('click', showActiveTodos);
+
+// show completed todos part
+const showCompletedTodos = e => {
+  deleteClass('#all', 'selected');
+  deleteClass('#active', 'selected');
+  e.target.className = 'selected';
+  const $todos = $todoList.querySelectorAll('li');
+  $todos.forEach(todo => {
+    todo.style.display = todo.querySelector('.toggle').checked === true ? 'block' : 'none';
+  });
+};
+
+const $showCompletedButton = document.getElementById('completed');
+$showCompletedButton.addEventListener('click', showCompletedTodos);
+
+// clear completed todos;
+const clearAllComp = () => {
+  const $todos = $todoList.querySelectorAll('li');
+  $todos.forEach(todo => {
+    if (todo.querySelector('.toggle').checked === true) {
+      compCnt -= 1;
+      curCnt -= 1;
+      todo.remove();
+    }
+  });
+  updateTodoCnt(curCnt);
+  if (compCnt > 0) $clearCompleted.style.display = 'block';
+  else $clearCompleted.style.display = 'none';
+};
+
+const $clearCompletedButton = document.querySelector('.clear-completed');
+$clearCompletedButton.addEventListener('click', clearAllComp);
