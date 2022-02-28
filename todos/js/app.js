@@ -61,3 +61,48 @@ const deleteTodo = e => {
 
 const $destroyButton = document.querySelector('.todo-list');
 $destroyButton.addEventListener('click', deleteTodo);
+
+// completed todo
+const completedTodo = e => {
+  if (e.target.className === 'toggle') {
+    if (e.target.checked === true) compCnt += 1;
+    else compCnt -= 1;
+  }
+  if (compCnt > 0) $clearCompleted.style.display = 'block';
+  else $clearCompleted.style.display = 'none';
+};
+
+const $completed = document.querySelector('.todo-list');
+$completed.addEventListener('change', completedTodo);
+
+// edit todo content part
+const editTodo = e => {
+  if (e.target.tagName === 'LABEL') {
+    const $content = e.target.textContent;
+    const todos = [...document.querySelector('.todo-list').children];
+    const $targetTodo = todos.find(todo => todo.textContent === $content);
+    $targetTodo.firstChild.style.display = 'none';
+    $targetTodo.lastChild.style.display = 'block';
+  } else if (e.code === 'Enter') {
+    const $li = e.target.parentNode;
+    $li.firstChild.querySelector('label').textContent = e.target.value;
+    $li.firstChild.style.display = 'block';
+    e.target.style.display = 'none';
+  }
+};
+
+const $todo = document.querySelector('.todo-list');
+$todo.addEventListener('dblclick', editTodo);
+$todo.addEventListener('keyup', editTodo);
+
+// toggle all part
+const toggleAll = () => {
+  const $todos = $todoList.querySelectorAll('li');
+  $todos.forEach(todo => {
+    const $checked = todo.querySelector('.toggle').checked;
+    todo.querySelector('.toggle').checked = !$checked;
+  });
+};
+
+const $allToggleButton = document.querySelector('.toggle-all');
+$allToggleButton.addEventListener('change', toggleAll);
